@@ -52,12 +52,10 @@ void initLogger(OutType type_flag) {
                 logger.output = stderr;
                 break;
             case L_FILE:
-                setLogFile("clog.log");
                 break;
             case ALL:
 #define WITH_COLORS
                 logger.output = stderr;
-                setLogFile("clog.log");
                 break;
             default:
                 break;
@@ -115,6 +113,9 @@ void logMessage(Log_Level level,
     va_end(args);
 
     formatTime();
+    if (logger.log_file == NULL) {
+        setLogFile("clog.log");
+    }
 
     if (logger.type_flag == ALL) {
         assert(logger.log_file != NULL);

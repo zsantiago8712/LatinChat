@@ -18,9 +18,7 @@ void initGui(void) {
 }
 
 void createMainWindow(Gui* gui) {
-    getmaxyx(stdscr, gui->main_window_height,
-             gui->main_window_width);  // Ajusta aquí
-
+    getmaxyx(stdscr, gui->main_window_height, gui->main_window_width);
     gui->main_window =
         newwin(gui->main_window_height, gui->main_window_width, 0, 0);
 
@@ -35,7 +33,7 @@ void createMainWindow(Gui* gui) {
               APP_TITLE);
 
     wrefresh(gui->main_window);
-    LOG_INFO("Main window created");
+    // LOG_INFO("Main window created");
 }
 
 void createInputWindow(Gui* gui) {
@@ -79,7 +77,7 @@ i32 getInputWindow(Gui* gui) {
                 mvwaddch(gui->secondary_window, 1, index + 1, ' ');
                 wmove(gui->secondary_window, 1, index + 1);
             }
-        } else if (ch == '\n') {  // Termina con Enter.
+        } else if (ch == '\n') {
             break;
         }
     }
@@ -88,6 +86,7 @@ i32 getInputWindow(Gui* gui) {
         port = atoi(input_buffer);
     }
 
+    flushinp();
     werase(gui->secondary_window);
     wrefresh(gui->main_window);
     delwin(gui->secondary_window);
@@ -112,20 +111,49 @@ void createChatWindow(Gui* gui) {
 
     keypad(gui->secondary_window, TRUE);
     scrollok(gui->secondary_window, TRUE);
+    nodelay(gui->secondary_window, TRUE);
 
-    for (int i = 0; i < 10; i++) {
-        wmove(gui->secondary_window, i + 1, 2);
-        wprintw(gui->secondary_window, "Mensaje %d", i);
-        wrefresh(gui->secondary_window);
-    }
-
+    wmove(gui->secondary_window, 1, 2);
     wrefresh(gui->main_window);
     wrefresh(gui->secondary_window);
-    LOG_INFO("Chat window created");
+}
+
+void showNewMessage(Gui* gui, const char* message, const u32 index) {
+    if (gui->secondary_window == NULL) {
+        LOG_ERROR("Secondary window not created");
+    }
+
+    if (gui->main_window == NULL) {
+        LOG_ERROR("Main window not created");
+    }
+
+    wprintw(gui->secondary_window, "%s", message);
+    wmove(gui->secondary_window, (index + 1), 2);
+    wrefresh(gui->secondary_window);
 }
 
 void terminateGui(Gui* gui) {
     delwin(gui->secondary_window);
     delwin(gui->main_window);
     endwin();
+}
+
+bool processInputKey(Gui* gui) {
+    int key = '\0';
+    // flushinp();
+    nodelay(gui->secondary_window, TRUE);
+    key = wgetch(gui->secondary_window);
+
+    if (key != ERR) {
+        switch (key) {
+            case 'q':
+                return false;
+                break;
+            default:
+                break;
+        }
+    }
+    wrefresh(gui->secondary_window);
+    wrefresh(gui->main_window);
+    return true;
 }
