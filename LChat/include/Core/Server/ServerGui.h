@@ -12,3 +12,7 @@ void createInputWindow(Gui* gui);
 void createChatWindow(Gui* gui);
 
 i32 getInputWindow(Gui* gui);
+
+void showNewMessage(Gui* gui, const char* message, const u32 index);
+
+bool processInputKey(Gui* gui);
