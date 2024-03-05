@@ -1,6 +1,8 @@
 # Created by https://www.toptal.com/developers/gitignore/api/c,premake-gmake,clion,visualstudiocode,cmake
 # Edit at https://www.toptal.com/developers/gitignore?templates=c,premake-gmake,clion,visualstudiocode,cmake
+.DS_Store
 
+/.vscode
 ### C ###
 /build
 /.xmake
