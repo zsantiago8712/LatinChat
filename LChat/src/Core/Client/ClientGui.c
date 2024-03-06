@@ -112,14 +112,22 @@ bool processKey(Client* cliente, Gui* gui, Mensaje* input) {
                 status = proccesInput(gui, input);
 
                 if (status == INPUT_FINISHED) {
-                    cliente->memory.num_mensajes++;
+                    sendMessage(&cliente->memory, input->contenido);
                     showNewMessage(gui, input->contenido,
                                    cliente->memory.num_mensajes);
-                    sendMessage(&cliente->memory, input->contenido);
                     sendNotifiacion(cliente, input->longitud);
                     werase(gui->input_window);  // Limpia la ventana de entrada
+                    box(gui->input_window, 0, 0);
+                    mvwprintw(
+                        gui->input_window, 0,
+                        ((gui->main_window_width - 2) - strlen(INPUT_TITLE)) /
+                            2,
+                        "%s", INPUT_TITLE);
+
+                    keypad(gui->input_window, TRUE);
                     wmove(gui->input_window, 1, 1);
                     wrefresh(gui->input_window);
+                    *input = NewMessage;
                 } else if (status == INPUT_CANCEL) {
                     *input = NewMessage;
                     werase(gui->input_window);  // Limpia la ventana de entrada

@@ -109,7 +109,6 @@ void makeSocketBlocking(int sockfd) {
 }
 
 void getAllMessages(Client* client, Gui* gui) {
-    char buffer[MAX_TAMAÑO_MENSAJE];
     int result;
     fd_set readfds;
     struct timeval timeout;
