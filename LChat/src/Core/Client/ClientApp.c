@@ -52,6 +52,7 @@ void runApp(void) {
     while (app->running) {
         mensaje = NewMessage;
         mensaje.longitud = updateClient(&app->client);
+
         if (mensaje.longitud > 0) {
             getLastMessage(&app->client.memory, mensaje.contenido,
                            mensaje.longitud);
@@ -61,6 +62,7 @@ void runApp(void) {
         } else if (mensaje.longitud == SERVER_DISCONNECTED) {
             LOG_DEBUG("Server disconnected");
             app->running = false;
+            break;
         }
 
         app->running = processKey(&app->client, &app->gui, &input);

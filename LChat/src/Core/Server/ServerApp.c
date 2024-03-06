@@ -52,6 +52,7 @@ void runApp(void) {
                            app->server.memory.num_mensajes);
             sendNotification(&app->server, mensaje_socket.id_cliente,
                              mensaje.longitud);
+            mensaje = NewMessage;
         }
         app->running = processInputKey(&app->gui);
     }
