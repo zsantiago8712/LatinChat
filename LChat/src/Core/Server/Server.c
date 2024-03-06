@@ -79,11 +79,12 @@ InfoMensaje updateServer(Server* server) {
                 } else if (result == 0) {
                     LOG_DEBUG("Client %d disconnected", server->new_sockets[i]);
                     close(server->new_sockets[i]);
-                    server->num_clients_connected--;
+
                     for (i32 j = 0; j < server->num_clients_connected; j++) {
                         server->new_sockets[j] = server->new_sockets[j + 1];
                     }
                     server->new_sockets[server->num_clients_connected - 1] = 0;
+                    server->num_clients_connected--;
                 }
             }
         }

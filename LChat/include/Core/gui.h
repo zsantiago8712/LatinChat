@@ -7,6 +7,7 @@ struct _win_st;
 typedef struct {
     struct _win_st* main_window;
     struct _win_st* secondary_window;
+    struct _win_st* input_window;
 
     i32 main_window_width;
     i32 main_window_height;
@@ -19,7 +20,7 @@ typedef struct {
 
 } Gui;
 
-#define NewGui                       \
-    (Gui) {                          \
-        NULL, NULL, 0, 0, 0, 0, 0, 0 \
+#define NewGui                             \
+    (Gui) {                                \
+        NULL, NULL, NULL, 0, 0, 0, 0, 0, 0 \
     }

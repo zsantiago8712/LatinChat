@@ -1,21 +1,22 @@
 #include "Core/Client/ClientApp.h"
 #include <stdbool.h>
-#include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 #include "Core/Client/Client.h"
+#include "Core/Client/ClientGui.h"
 #include "Core/Mensajes.h"
+#include "Core/gui.h"
 #include "Utils/clog.h"
 #include "Utils/types.h"
 
 typedef struct {
     Client client;
+    Gui gui;
     bool running;
 } App;
 
-#define NewApp \
-    (App) {    \
-        false  \
+#define NewApp                   \
+    (App) {                      \
+        NewClient, NewGui, false \
     }
 
 static App* getApp(void);
@@ -23,7 +24,8 @@ static App* getApp(void);
 void initApp(void) {
     App* app = getApp();
 
-    initLogger(STDERR);
+    initLogger(L_FILE);
+    initGui();
     // setLogFile("Logs/LChatServer.logs");
 
     // TODO: INIT GUI ASK FOR PORT IF KEY PRESSED ESC USE DEFAULT PORT
@@ -36,40 +38,32 @@ void initApp(void) {
 
     app->running = true;
     LOG_DEBUG("Client started");
+    createMainWindow(&app->gui);
+    createChatWindow(&app->gui);
 }
 
 void runApp(void) {
     App* app = getApp();
-    Mensaje mensaje = NewMessage;
 
-    i32 firstTime = 0;
+    getAllMessages(&app->client, &app->gui);
+    Mensaje input = NewMessage;
+    Mensaje mensaje = NewMessage;
     // TODO: GUI
     while (app->running) {
+        mensaje = NewMessage;
         mensaje.longitud = updateClient(&app->client);
         if (mensaje.longitud > 0) {
-            app->client.memory.num_mensajes++;
-
             getLastMessage(&app->client.memory, mensaje.contenido,
                            mensaje.longitud);
-            puts(mensaje.contenido);
+            LOG_INFO(mensaje.contenido);
 
-            // TODO: obtener mensaje de memoria compartida
             // TODO: mostrar mensaje en GUI o en printf por mientras
         } else if (mensaje.longitud == SERVER_DISCONNECTED) {
             LOG_DEBUG("Server disconnected");
             app->running = false;
         }
 
-        if (firstTime == 1) {
-            const char* msg = "(@Daniel): Yes!!!";
-            const u32 size = strlen(msg);
-            sendMessage(&app->client.memory, msg);
-            sendNotifiacion(&app->client, size);
-            puts(msg);
-        } else if (firstTime == 5) {
-            app->running = false;
-        }
-        firstTime += 1;
+        app->running = processKey(&app->client, &app->gui, &input);
     }
 }
 

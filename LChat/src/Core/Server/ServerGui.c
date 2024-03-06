@@ -33,7 +33,6 @@ void createMainWindow(Gui* gui) {
               APP_TITLE);
 
     wrefresh(gui->main_window);
-    // LOG_INFO("Main window created");
 }
 
 void createInputWindow(Gui* gui) {
@@ -140,13 +139,13 @@ void terminateGui(Gui* gui) {
 
 bool processInputKey(Gui* gui) {
     int key = '\0';
-    // flushinp();
     nodelay(gui->secondary_window, TRUE);
     key = wgetch(gui->secondary_window);
 
     if (key != ERR) {
         switch (key) {
             case 'q':
+            case 27:
                 return false;
                 break;
             default:

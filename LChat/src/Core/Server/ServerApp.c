@@ -40,8 +40,6 @@ void runApp(void) {
     showNewMessage(&app->gui, "(@Server): Welcome to LChat!\n",
                    app->server.memory.num_mensajes);
     app->running = true;
-    // bool firstTimeClient1 = false;
-    // bool firstTimeClient2 = false;
 
     while (app->running) {
         InfoMensaje mensaje_socket = updateServer(&app->server);
@@ -55,18 +53,6 @@ void runApp(void) {
             sendNotification(&app->server, mensaje_socket.id_cliente,
                              mensaje.longitud);
         }
-
-        // if ((firstTimeClient1 == false || firstTimeClient2 == false) &&
-        //     app->server.num_clients_connected > 0) {
-        //     if (app->server.num_clients_connected == 1 &&
-        //         firstTimeClient1 == false) {
-        //         sendFirstNotification(&app->server);
-        //         firstTimeClient1 = true;
-        //     } else if (app->server.num_clients_connected == 2 &&
-        //                firstTimeClient2 == false) {
-        //         sendFirstNotification(&app->server);
-        //         firstTimeClient2 = true;
-
         app->running = processInputKey(&app->gui);
     }
 }

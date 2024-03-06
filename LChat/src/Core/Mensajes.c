@@ -35,6 +35,7 @@ void sendMessage(ShareMemory* memory, const char* mensaje) {
     // Incrementar num_mensajes
     memory->num_mensajes++;
     LOG_DEBUG("SEND offset to %d", memory->offset);
+    LOG_DEBUG("BUFFER %s", (char*)memory->buffer);
     sem_post(memory->semaforo);
 }
 
@@ -54,5 +55,6 @@ void getLastMessage(ShareMemory* memory, char* mensaje, i32 length) {
     memory->free_space -= sizeof(char) * length;
     memory->num_mensajes++;
 
+    LOG_INFO("BUFFER %s", (char*)memory->buffer);
     sem_post(memory->semaforo);
 }

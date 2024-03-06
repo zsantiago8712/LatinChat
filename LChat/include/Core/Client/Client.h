@@ -2,6 +2,7 @@
 
 #include <netinet/in.h>
 #include "Core/MemoriaCompartida.h"
+#include "Core/gui.h"
 #include "Utils/types.h"
 
 #define DEFAULT_PORT 8080
@@ -35,3 +36,5 @@ void destroyClient(Client* client);
 void sendNotifiacion(Client* client, const u32 lenMeesage);
 
 i32 updateClient(Client* client);
+
+void getAllMessages(Client* client, Gui* gui);
