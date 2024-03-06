@@ -82,7 +82,7 @@ Una vez que el servidor está en ejecución y te has conectado con el cliente, s
 
 ## Cierre
 
-Para cerrar el servidor o un cliente, no es necesario cerrar la ventana de la terminal; simplemente presiona `Escape` para terminar la ejecución de manera segura.
+Para cerrar el servidor o un cliente, no es necesario cerrar la ventana de la terminal; simplemente presiona `q` para terminar la ejecución de manera segura.
 ```
 
 Este formato está diseñado para ser incluido directamente en tu archivo README.md. Puedes ajustarlo según las necesidades específicas de tu proyecto, incluyendo detalles adicionales o modificando cualquier sección para que coincida mejor con la funcionalidad y el uso de tu aplicación LChat.
